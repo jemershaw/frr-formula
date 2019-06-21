@@ -89,11 +89,13 @@ frr_service_{{ service }}_activation:
 
 
 frr_{{ service }}_service:
-{%-   if not protocol == "zebra" %}
-{%-     set service = protocol %}
-{%-   else %}
-{%-     set service = "{}".format(protocol) %}
-{%-   endif %}
+{%-     if protocol == "zebra" %}
+{%-       set service = protocol %}
+{%-     elif grains['kernel'] == "SunOS" %}
+{%-       set service = "{}".format(protocol) %}
+{%-     else %}
+{%-       set service = "{}d".format(protocol) %}
+{%-     endif %}
 {%-     if config %}
   service.running:
     - enable: True
