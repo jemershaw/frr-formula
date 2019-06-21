@@ -33,7 +33,8 @@ frr_service:
 {%-   if protocol == "zebra" %}
 {%-     set service = protocol %}
 {%-   else %}
-{%-     set service = "{}d".format(protocol) %}
+{%-     set daemon = "d" %}
+{%-     set service = "{}{}".format(protocol, daemon) %}
 {%-   endif %}
 {%-   do services.append(service) %}
 
