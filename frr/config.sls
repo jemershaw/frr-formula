@@ -87,13 +87,7 @@ frr_service_{{ service }}_activation:
 
 {%-   if not map.one_service_to_start_them_all %}
 
-{%-   do salt.log.error(grains['kernel']) %}
-{%-   if not protocol == "zebra" %}
-{%-     set service = protocol %}
-{%-   else %}
-{%-     set service = "{}".format(protocol) %}
-{%-   endif %}
-
+{%-   salt.log.error(grains['kernel']) %}
 frr_{{ service }}_service:
 {%-     if config %}
   service.running:
