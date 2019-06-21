@@ -4,6 +4,17 @@
   "zebra": True
 }%}
 
+frr_service:
+  service.running:
+    - name: {{ map.service }}
+{%-   if not map.manage_sysrc %}
+    - enable: True
+{%-   endif %}
+    #- reload: True  # would need frr-pythontools
+    - watch:
+      - pkg: frr_package
+
+
 {%- macro service_dependencies(service_name=False) -%}
 - watch_in:
 {%-   if service_name and not map.one_service_to_start_them_all %}
@@ -161,14 +172,3 @@ frr_enable:
 {%-   endif %}
 
 {%- endif %}
-
-frr_service:
-  service.running:
-    - name: {{ map.service }}
-{%- if not map.manage_sysrc %}
-    - enable: True
-{%- endif %}
-    #- reload: True  # would need frr-pythontools
-    - watch:
-      - pkg: frr_package
-
