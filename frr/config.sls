@@ -160,14 +160,15 @@ frr_enable:
        - service: frr_service
 {%-   endif %}
 
+{%- endif %}
+
 frr_service:
   service.running:
     - name: {{ map.service }}
-{%-   if not map.manage_sysrc %}
+{%- if not map.manage_sysrc %}
     - enable: True
-{%-   endif %}
+{%- endif %}
     #- reload: True  # would need frr-pythontools
     - watch:
       - pkg: frr_package
 
-{%- endif %}
