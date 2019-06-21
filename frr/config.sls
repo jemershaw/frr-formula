@@ -33,8 +33,7 @@ frr_service:
 {%-   if protocol == "zebra" %}
 {%-     set service = protocol %}
 {%-   else %}
-{%-     set daemon = "d" %}
-{%-     set service = "{}{}".format(protocol, daemon) %}
+{%-     set service = "{}d".format(protocol) %}
 {%-   endif %}
 {%-   do services.append(service) %}
 
@@ -87,6 +86,14 @@ frr_service_{{ service }}_activation:
 {%-   endif %}
 
 {%-   if not map.one_service_to_start_them_all %}
+
+{%-   do salt.log.error(grains['kernel']) %}
+{%-   if not protocol == "zebra" %}
+{%-     set service = protocol %}
+{%-   else %}
+{%-     set service = "{}".format(protocol) %}
+{%-   endif %}
+
 frr_{{ service }}_service:
 {%-     if config %}
   service.running:
